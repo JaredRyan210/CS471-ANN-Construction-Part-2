@@ -1,12 +1,18 @@
+import csv
+
 class Node:
     def __init__(self, connections):
         self.collector = 0.0
         self.connections = connections
 
 def read_file(in_file):
+  inputs = list()
   with open(in_file, 'r') as file:
-    contents = file.read().strip().split(',')
-    return list(map(int, contents))
+    contents = csv.reader(file)
+    for line in contents:
+       inputs.append(line)
+  return inputs
+      
     
 def init_network(structure):
   network = []
@@ -30,8 +36,15 @@ def feed_foward(network, inputs):
 
 
 if __name__ == '__main__':
-  network_structure = read_file('network.txt')
-  inputs = read_file('input.txt')
+  inputs = read_file('data.csv')
+  print("inputs:", inputs)
+
+
+
+
+  '''
+  network_structure = read_file('data.csv')
+  inputs = read_file('data.csv')
   network = init_network(network_structure)
   output = feed_foward(network, inputs)
   print("The structure of the ANN is:", network_structure)
@@ -43,3 +56,4 @@ if __name__ == '__main__':
      for j in range(0, len(network[i])):
       print(network[i][j].collector)
   print("The output is:", output)
+'''
