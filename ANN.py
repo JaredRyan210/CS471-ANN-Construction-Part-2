@@ -45,12 +45,18 @@ def forward_prop(network, inputs):
 def forward_prop(inputs, network):
   for i in range(len(inputs)):
     network[0][i].collector = inputs[i]
-
+  #####RUN_INPUT######
   for layer in range(1,len(network)):
     for node in network[layer]:
       node.collector = 0.0
       for conn in node.connections:
-        node.collector += conn.collector * random.uniform(0, 1)
+        weight = random.uniform(0,1)
+        node.collector += conn.collector * weight
+        print(f"weight of w{layer}:", weight)
+      print("\n")
+      
+
+
 
   output = []
   for node in network[-1]:
