@@ -33,16 +33,6 @@ def init_network(structure):
       network.append(layer)
       last_layer = layer
   return network
-      
-'''
-def forward_prop(network, inputs):
-  for i, node in enumerate(network[0]):
-    node.collector = inputs[i]
-  for layer in network[1:]:
-    for node in layer:
-      node.collector = sum(connection.collector for connection in node.connections)
-  return [node.collector for node in network[-1]]
-'''
 
 def forward_prop(inputs, network):
   print("inputs:",inputs)
@@ -70,6 +60,11 @@ def forward_prop(inputs, network):
 
 def transfer(activation):
   return 1.0 / (1.0 + math.exp(-activation))
+
+def transfer_deriv(output):
+  return output * (1.0 - output)
+
+
 
 
 
