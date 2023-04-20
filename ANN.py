@@ -19,10 +19,11 @@ def read_network(in_file):
 
 def read_csv(in_file):
   inputs = []
+  expected = []
   with open(in_file, 'r') as file:
     contents = csv.reader(file)
     for line in contents:
-       inputs.append([float(x) for x in line[:-1]]) ###[:-1] to get 4 inputs
+       inputs.append([float(x) for x in line]) ###[:-1] to get 4 inputs
   return inputs
 
 def init_network(structure):
@@ -36,7 +37,7 @@ def init_network(structure):
 
 def forward_prop(inputs, network):
   print("inputs:",inputs)
-  for i in range(len(inputs)):
+  for i in range(len(inputs) - 1):
     network[0][i].collector = inputs[i]
   #####RUN_INPUT######
   for layer_index, layer in enumerate(range(1,len(network))):
@@ -64,18 +65,58 @@ def transfer(activation):
 def transfer_deriv(output):
   return output * (1.0 - output)
 
+def backward_propagate_error(network, expected):
+  for i in reversed(range(len(network))):
+    layer = network[i]
+    errors = []
+    if i != len(network) - 1:
+      for j in range(len(layer)):
+        error = 0.0
+        for neuron in network[i + 1]:
+          error += (neuron.connections[j].collector * neuron.delta)
+        errors.append(error)
+    else:
+      for j in range(len(layer)):
+        neuron = layer[j]
+        errors.append(neuron.collector - expected[j])
+    for j in range(len(layer)):
+      neuron = layer[j]
+      neuron.delta = errors[j] * transfer_deriv(neuron.collector)
+
 
 
 
 
 if __name__ == '__main__':
+  '''
+  ######TESTING FORWARD_PROP########
   structure = read_network('network.txt')
   inputs = read_csv('data.csv')
 
   network = init_network(structure)
 
-  output = forward_prop(inputs[4], network)
+  output = forward_prop(inputs[0], network)
+  ########################
   '''
+
+
+#####TESTING BACK_PROP_ERROR#########
+  structure = read_network('network.txt')
+  inputs = read_csv('data.csv')
+  network = init_network(structure)
+
+  for input_data in inputs:
+    expected = [input_data[-1]]
+
+  backward_propagate_error(network, expected)
+  for layer in network:
+    for neuron in layer:
+      print(neuron.delta)
+    print('\n')
+###########################
+
+
+'''
   print("The structure of the ANN is:",structure)
   print(f"The first layer contains {len(inputs[15])} input(s)")
   print(f"The hidden layer contains {structure[1]} nodes")
@@ -95,7 +136,7 @@ if __name__ == '__main__':
 
 
 
-  '''
+'''
   network_structure = read_file('data.csv')
   inputs = read_file('data.csv')
   network = init_network(network_structure)
