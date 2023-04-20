@@ -4,11 +4,13 @@
 
 import csv
 import random
+import math
 
 class Node:
     def __init__(self, connections):
         self.collector = 0.0
         self.connections = connections
+
 
 def read_network(in_file):
   with open(in_file, 'r') as file:
@@ -43,25 +45,31 @@ def forward_prop(network, inputs):
 '''
 
 def forward_prop(inputs, network):
+  print("inputs:",inputs)
   for i in range(len(inputs)):
     network[0][i].collector = inputs[i]
   #####RUN_INPUT######
-  for layer in range(1,len(network)):
-    for node in network[layer]:
+  for layer_index, layer in enumerate(range(1,len(network))):
+    for node_index, node in enumerate(network[layer]):
       node.collector = 0.0
-      for conn in node.connections:
+      for conn_index, conn in enumerate(node.connections):
         weight = random.uniform(0,1)
+
         node.collector += conn.collector * weight
-        print(f"weight of w{layer}:", weight)
+        node.collector = transfer(node.collector)
+        
+        print(f"weight of: {layer_index + 1}, {node_index + 1}, {conn_index + 1}:", weight)
+        print(f"value at collector:{layer_index + 1}, {node_index + 1}, {conn_index + 1}:", node.collector)
       print("\n")
       
-
-
-
   output = []
   for node in network[-1]:
     output.append(node.collector)
+    print("output",output)
   return output
+
+def transfer(activation):
+  return 1.0 / (1.0 + math.exp(-activation))
 
 
 
@@ -71,7 +79,8 @@ if __name__ == '__main__':
 
   network = init_network(structure)
 
-  output = forward_prop(inputs[15], network)
+  output = forward_prop(inputs[4], network)
+  '''
   print("The structure of the ANN is:",structure)
   print(f"The first layer contains {len(inputs[15])} input(s)")
   print(f"The hidden layer contains {structure[1]} nodes")
@@ -84,7 +93,7 @@ if __name__ == '__main__':
   print("The output is:", output)
   print("--------------------")
   #output = feed_foward(network, inputs)
-
+'''
 
 
   
