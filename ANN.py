@@ -10,6 +10,8 @@ class Node:
     def __init__(self, connections):
         self.collector = 0.0
         self.connections = connections
+        self.delta = 0.0
+        self.weight = 0.0
 
 
 def read_network(in_file):
@@ -36,7 +38,7 @@ def init_network(structure):
   return network
 
 def forward_prop(inputs, network):
-  print("inputs:",inputs)
+  #print("inputs:",inputs)
   for i in range(len(inputs) - 1):
     network[0][i].collector = inputs[i]
   #####RUN_INPUT######
@@ -49,14 +51,14 @@ def forward_prop(inputs, network):
         node.collector += conn.collector * weight
         node.collector = transfer(node.collector)
         
-        print(f"weight of: {layer_index + 1}, {node_index + 1}, {conn_index + 1}:", weight)
-        print(f"value at collector:{layer_index + 1}, {node_index + 1}, {conn_index + 1}:", node.collector)
-      print("\n")
+        #print(f"weight of: {layer_index + 1}, {node_index + 1}, {conn_index + 1}:", weight)
+        #print(f"value at collector:{layer_index + 1}, {node_index + 1}, {conn_index + 1}:", node.collector)
+      #print("\n")
       
   output = []
   for node in network[-1]:
     output.append(node.collector)
-    print("output",output)
+    #print("output",output)
   return output
 
 def transfer(activation):
@@ -84,6 +86,32 @@ def backward_propagate_error(network, expected):
       neuron.delta = errors[j] * transfer_deriv(neuron.collector)
 
 
+###########FIX AND FINISH 4/19###################
+def update_weights(l_rate):
+  for i in range(1, len(network)):
+    inputs = [neuron.collector for neuron in network[i - 1]]
+    for node in network[i]:
+      for j in range(len(inputs)):
+        node.connections[j].weight += l_rate * node.delta * inputs[j]
+      node.connections[-1].weight += l_rate * node.delta
+
+def train_network(network, train, l_rate, n_epoch, target_error):
+  num_inputs = len(network[0])
+  for epoch in range((n_epoch)):
+    sum_error = 0
+    for row in train:
+      inputs = row[:num_inputs]
+      excepted = row[num_inputs:]
+      outputs = forward_prop(inputs, network)
+      for i in range(len(excepted)):
+        sum_error += (excepted[i] - outputs[i]) ** 2
+        #print("sum error:", sum_error)
+      if sum_error <= target_error:
+        print("Target error reached...error r=%f" % (sum_error))
+        return
+      backward_propagate_error(network, excepted)
+      update_weights(l_rate)
+    print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
 
 
@@ -99,8 +127,8 @@ if __name__ == '__main__':
   ########################
   '''
 
-
-#####TESTING BACK_PROP_ERROR#########
+  '''
+  #####TESTING BACK_PROP_ERROR#########
   structure = read_network('network.txt')
   inputs = read_csv('data.csv')
   network = init_network(structure)
@@ -113,41 +141,14 @@ if __name__ == '__main__':
     for neuron in layer:
       print(neuron.delta)
     print('\n')
-###########################
+  ###########################
+  '''
+  ########TESTING TRAIN_NETWORK########
+  structure = read_network('network.txt')
+  inputs = read_csv('data.csv')
 
+  network = init_network(structure)
 
-'''
-  print("The structure of the ANN is:",structure)
-  print(f"The first layer contains {len(inputs[15])} input(s)")
-  print(f"The hidden layer contains {structure[1]} nodes")
-  print(f"The output layer contains {structure[2]} node")
-  print("The inputs are:", inputs[15])
-  for i in range(0, len(network)):
-    for j in range(0, len(network[i])):
-      print(network[i][j].collector)
-    print('\n')
-  print("The output is:", output)
-  print("--------------------")
-  #output = feed_foward(network, inputs)
-'''
+  train_network(network, inputs, l_rate = 0.5, n_epoch=10, target_error = 0.05)
 
-
-  
-
-
-
-'''
-  network_structure = read_file('data.csv')
-  inputs = read_file('data.csv')
-  network = init_network(network_structure)
-  output = feed_foward(network, inputs)
-  print("The structure of the ANN is:", network_structure)
-  print(f"The first layer contains {len(inputs)} input(s)")
-  print(f"The hidden layer contains {network_structure[1]} nodes")
-  print(f"The output layer contains {network_structure[2]} node")
-  print("The inputs are:", inputs)
-  for i in range(0, len(network)):
-     for j in range(0, len(network[i])):
-      print(network[i][j].collector)
-  print("The output is:", output)
-'''
+  ###############
