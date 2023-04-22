@@ -95,7 +95,8 @@ def update_weights(l_rate):
     for neuron in network[i]:
       for j in range(len(inputs)):
         neuron.connections[j].weight -= l_rate * neuron.delta * inputs[j]
-      neuron.connections[-1].weight -= l_rate * neuron.delta  
+      neuron.connections[-1].weight -= l_rate * neuron.delta
+        
 
 
 
@@ -108,14 +109,14 @@ def train_network(network, train, l_rate, n_epoch, target_error):
       expected = []
       for i in range(len(network[-1])):
         expected.append(row[num_inputs + i])
+        #print('expected:', expected)
         sum_error += (row[num_inputs + i] - network[-1][i].collector) ** 2
-      if sum_error <= (target_error):
-        print("Target error reached...error r=%f" % (sum_error))
-        return
+        if sum_error <= (target_error):
+          print("Target error reached...error r=%f" % (sum_error))
+          return
       backward_propagate_error(network, expected)
       update_weights(l_rate)
-      print('>epoch=%d, lrate=%.2f, error=%.3f' % (epoch, l_rate, sum_error))
-
+      print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
 if __name__ == '__main__':
   '''
@@ -151,6 +152,6 @@ if __name__ == '__main__':
 
   network = init_network(structure)
 
-  train_network(network, inputs, l_rate = 0.05, n_epoch=20, target_error = 0.1)
+  train_network(network, inputs, l_rate = 0.05, n_epoch=20, target_error = 0.05)
 
   ###############
