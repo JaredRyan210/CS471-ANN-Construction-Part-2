@@ -1,7 +1,3 @@
-#FIRST: get row from csv file, last column is expected output
-#SECOND: feed foward(run_input -> activate -> transfer)
-#THIRD: 
-
 import csv
 import random
 import math
@@ -11,7 +7,7 @@ class Node:
         self.collector = 0.0
         self.connections = connections
         self.delta = 0.0
-        self.weight = 0.0
+        self.weight = random.uniform(0,1)
 
 
 def read_network(in_file):
@@ -45,12 +41,12 @@ def forward_prop(inputs, network):
   #####RUN_INPUT######
   for layer in (range(1,len(network))):
     for node in (network[layer]):
-      node.collector = 0.0
+      #node.collector = 0.0
       for conn in (node.connections):
-        weight = random.uniform(0,1)
+        #weight = random.uniform(0,1)
 
-        node.collector = conn.collector + (conn.collector * weight)
-        node.collector = transfer(node.collector)
+        node.collector = conn.collector + (conn.collector * conn.weight)
+      node.collector = transfer(node.collector)
         
         #print(f"weight of: {layer_index + 1}, {node_index + 1}, {conn_index + 1}:", weight)
         #print(f"value at collector:{layer_index + 1}, {node_index + 1}, {conn_index + 1}:", node.collector)
@@ -88,7 +84,7 @@ def backward_propagate_error(network, expected):
       #print('delta',neuron.delta)
 
 
-###########FIX AND FINISH 4/19###################
+
 def update_weights(l_rate):
   for i in range(1, len(network)):
     inputs = [neuron.collector for neuron in network[i - 1]]
@@ -116,42 +112,19 @@ def train_network(network, train, l_rate, n_epoch, target_error):
           return
       backward_propagate_error(network, expected)
       update_weights(l_rate)
-      print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
+    print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 
 if __name__ == '__main__':
-  '''
-  ######TESTING FORWARD_PROP########
-  structure = read_network('network.txt')
-  inputs = read_csv('data.csv')
 
-  network = init_network(structure)
 
-  output = forward_prop(inputs[0], network)
-  ########################
-  '''
 
-  '''
-  #####TESTING BACK_PROP_ERROR#########
-  structure = read_network('network.txt')
-  inputs = read_csv('data.csv')
-  network = init_network(structure)
-
-  for input_data in inputs:
-    expected = [input_data[-1]]
-
-  backward_propagate_error(network, expected)
-  for layer in network:
-    for neuron in layer:
-      print(neuron.delta)
-    print('\n')
-  ###########################
-  '''
+####IT WOOOOOOOOOOOORKKKKKKKSSSSS##############
   ########TESTING TRAIN_NETWORK########
   structure = read_network('network.txt')
   inputs = read_csv('data.csv')
 
   network = init_network(structure)
 
-  train_network(network, inputs, l_rate = 0.05, n_epoch=20, target_error = 0.05)
+  train_network(network, inputs, l_rate = 0.05, n_epoch=100, target_error = 0.05)
 
   ###############
