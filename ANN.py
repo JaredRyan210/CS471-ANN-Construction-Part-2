@@ -81,6 +81,7 @@ def backward_propagate_error(network, expected):
           #error += (neuron.connections[j].collector * neuron.delta)
           error += (neuron.weights[j] * neuron.delta)
         errors.append(error)
+        #print(errors)
     else:
       for j in range(len(layer)):
         neuron = layer[j]
@@ -104,7 +105,7 @@ def update_weights(network, l_rate):
 def train_network(network, train, l_rate, n_epoch, target_error):
   num_inputs = len(network[0])
   for epoch in range((n_epoch)):
-    sum_error = 0
+    sum_error = 0.0
     for row in train:
       #print(row)
       forward_prop(row, network)
