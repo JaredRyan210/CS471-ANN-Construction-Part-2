@@ -2,6 +2,7 @@ import csv
 import random
 import math
 import time
+import sqlite3
 
 class Node:
     def __init__(self, connections):
@@ -102,7 +103,7 @@ def update_weights(network, l_rate):
         #print("updated weight:",neuron.connections[j].weight)
 
 
-def train_network(network, train, l_rate, n_epoch, target_error):
+def train_network(network, sql, l_rate, n_epoch, target_error):
   num_inputs = len(network[0])
   for epoch in range((n_epoch)):
     sum_error = 0.0
@@ -137,18 +138,19 @@ def train_network(network, train, l_rate, n_epoch, target_error):
     
 
 if __name__ == '__main__':
+  con = sqlite3.connect("hw.db")
+  cur = con.cursor()
+  train = []
+  sql = "select * from hw_data_2 order by random() limit 10"
+  cur.execute(sql)
+  train = cur.fetchall()
 
-
-
-####IT WOOOOOOOOOOOORKKKKKKKSSSSS##############
-  ########TESTING TRAIN_NETWORK########
   structure = read_network('network.txt')
   inputs = read_csv('data.csv')
 
   network = init_network(structure)
 
-  train_network(network, inputs, l_rate= 0.5, n_epoch=10000, target_error= 0.5)
+  train_network(network, train, l_rate= 0.5, n_epoch=10000, target_error= 0.5)
   start_time = time.time()
   print("---%s seconds ---" % (time.time() - start_time))
 
-  ###############
