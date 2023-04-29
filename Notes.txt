@@ -1,0 +1,21 @@
+sqlite3
+
+
+.separator ,
+.mode csv
+.import "/Users/jaredryan/Desktop/A_Z Handwritten Data.csv" hw_data_2
+create index hw_data_letter on hw_data_2(letter);
+select * from hw_data_2 hw_data_2 where letter = 0 order by random() limit 10;
+select letter, count(*) from hw_data_2 group by letter;
+
+
+
+create table hw_data_2 (letter , "output from ch.py")
+update hw_data_2 (output from normalize_cols.py)
+update hw_data_2 set letter = case letter when 0 then 1 else 0 end;
+select letter, count(*) from hw_data group by letter;
+
+
+select (cut and paste gerate_select.p) from hw_data_2 order by random() limit 1000;
+
+
