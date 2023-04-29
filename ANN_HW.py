@@ -1,7 +1,6 @@
 import csv
 import random
 import math
-import time
 import sqlite3
 
 class Node:
@@ -141,16 +140,13 @@ if __name__ == '__main__':
   con = sqlite3.connect("hw.db")
   cur = con.cursor()
   train = []
-  sql = "select * from hw_data_2 order by random() limit 10"
+  sql = "select * from hw_data_2 order by random() limit 1000"
   cur.execute(sql)
   train = cur.fetchall()
 
-  structure = read_network('network.txt')
-  inputs = read_csv('data.csv')
-
+  structure = read_network('network.csv')
+  #inputs = read_csv('data.csv')
   network = init_network(structure)
 
-  train_network(network, train, l_rate= 0.5, n_epoch=10000, target_error= 0.5)
-  start_time = time.time()
-  print("---%s seconds ---" % (time.time() - start_time))
+  train_network(network, train, l_rate= 0.1, n_epoch=1000, target_error= 0.5)
 
