@@ -117,7 +117,7 @@ def train_network(network, sql, l_rate, n_epoch, target_error):
         #sum_error += (error) ** 2
         #sum_error += (expected[i] - network[-1][i].collector) ** 2
         #print('expected:', expected)
-        #print("sum_error", sum_error)
+      #print("sum_error", sum_error)
         #print("row[num_inputs + i]:", row[num_inputs + i])
         #print("network[-1][i].collector:",network[-1][i].collector)
         
@@ -140,13 +140,35 @@ if __name__ == '__main__':
   con = sqlite3.connect("hw.db")
   cur = con.cursor()
   train = []
-  sql = "select * from hw_data_2 order by random() limit 1000"
-  cur.execute(sql)
+
+
+  #sql = "select * from hw_data_2"
+  
+  #print("Testing data for letter A")
+  #sql_A = "select * from hw_data_A limit 1000"
+  #cur.execute(sql_A)
+
+  #print("Testing data for letter B")
+  #sql_B = "select * from hw_data_B limit 1000"
+  #cur.execute(sql_B)
+
+  #print("Testing data for letter C")
+  #sql_C = "select * from hw_data_C limit 1000"
+  #cur.execute(sql_C)
+
+  #print("Testing data for letter D")
+  #sql_D = "select * from hw_data_D limit 1000"
+  #cur.execute(sql_D)
+
+  print("Testing data for letter E")
+  sql_E = "select * from hw_data_E limit 1000"
+  cur.execute(sql_E)
+  
   train = cur.fetchall()
 
   structure = read_network('network.csv')
   #inputs = read_csv('data.csv')
   network = init_network(structure)
 
-  train_network(network, train, l_rate= 0.1, n_epoch=1000, target_error= 0.5)
+  train_network(network, train, l_rate= 0.05, n_epoch=1000, target_error= 0.5)
 
