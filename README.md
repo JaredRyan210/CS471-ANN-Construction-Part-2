@@ -29,15 +29,15 @@ The dataset contains 785 columns:
 ## Steps to Run
 
 1. **Prepare the Dataset**:
-   - Import the dataset using SQLite.
-   - Normalize the data for better performance.
+- Import the dataset using SQLite.
+- Normalize the data for better performance.
 2. **Initialize the Network**:
-  - Define the network structure.
-  - Initialize nodes and connections.
+- Define the network structure.
+- Initialize nodes and connections.
 3. **Train the Network**:
-  - Use the provided scripts to train the network on the dataset.
-  - Experiment with different hyperparameters and document the results.
+- Use the provided scripts to train the network on the dataset.
+- Experiment with different hyperparameters and document the results.
 4. **Test the Network**:
-  - Evaluate the network’s performance on test data.
-  - Calculate accuracy and visualize the results.
+- Evaluate the network’s performance on test data.
+- Calculate accuracy and visualize the results.
  
