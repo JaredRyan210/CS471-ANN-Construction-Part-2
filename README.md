@@ -12,5 +12,5 @@ The dataset contains 785 columns:
 **Data Sources**
 
 - [NIST Special Database 19](https://www.nist.gov/srd/nist-special-database-19)
-- [CSV Handwriting Data](A_Z Handwritten Data.csv)
+- ([A_Z Handwritten Data.csv](https://www.kaggle.com/datasets/sachinpatel21/az-handwritten-alphabets-in-csv-format))
  
