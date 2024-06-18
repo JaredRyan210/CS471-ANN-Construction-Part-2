@@ -13,6 +13,8 @@ The dataset contains 785 columns:
 - [NIST Special Database 19](https://www.nist.gov/srd/nist-special-database-19)
 - [A_Z Handwritten Data.csv](https://www.kaggle.com/datasets/sachinpatel21/az-handwritten-alphabets-in-csv-format)
 
+## Project Structure
+
 - **ANN_HW.py**: Initial ANN implementation.
 - **ANN_HW_PART2.py**: Extended ANN implementation with additional features and visualizations.
 - **Links.txt**: Useful links for reference.
